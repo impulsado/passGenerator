@@ -6,6 +6,8 @@ console.clear();
 const resultEl = document.getElementById('result');
 
 const emailEl = document.getElementById('email');
+const passphraseEl = document.getElementById('passphrase');
+const passwordEl = document.getElementById('password');
 
 const lengthEl = document.getElementById('slider');
 
@@ -53,40 +55,24 @@ function applyFill(slider) {
 
 
 // FUNCTIONS
-const randomFunc = {
-	lower: getRandomLower,
-	upper: getRandomUpper,
-	number: getRandomNumber,
-	symbol: getRandomSymbol,
-};
-
+// CREC QUE AIXò ES POT TREURE
 function secureMathRandom() {
 	return window.crypto.getRandomValues(new Uint32Array(1))[0] / (Math.pow(2, 32) - 1);
-}
-
-function getRandomLower() {
-	return String.fromCharCode(Math.floor(Math.random() * 26) + 97);
-}
-
-function getRandomUpper() {
-	return String.fromCharCode(Math.floor(Math.random() * 26) + 65);
 }
 
 function getRandomNumber() {
 	return String.fromCharCode(Math.floor(secureMathRandom() * 10) + 48);
 }
 
-function getRandomSymbol() {
-	const symbols = '~!@#$%^&*()_+{}":?><;.,';
-	return symbols[Math.floor(Math.random() * symbols.length)];
-}
-
 function intInRange(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
-// MOUSE 
+function capitalizeFirstLetter(string) {
+	return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
+// MOUSE 
 resultContainer.addEventListener('mousemove', e => {
 	resultContainerBound = {
 	left: resultContainer.getBoundingClientRect().left,
@@ -146,15 +132,22 @@ generateBtn.addEventListener("click", () => {
 	    copyInfo.style.opacity = "0.75";
 	    copiedInfo.style.transform = "translatey(200%)";
 	    copiedInfo.style.opacity = "0";
-    } 
-    else {
+    } else if (passphraseEl.checked) {
+		const length = +lengthEl.value;
+		generatedPassword = true;
+        resultEl.innerText = generatePassphrase(length);
+        copyInfo.style.transform = 'translateY(0%)';
+	    copyInfo.style.opacity = "0.75";
+	    copiedInfo.style.transform = "translatey(200%)";
+	    copiedInfo.style.opacity = "0";
+	} else if (passwordEl.checked) {
         const length = +lengthEl.value;
 	    const hasLower = lowercaseEl.checked;
 	    const hasUpper = uppercaseEl.checked;
 	    const hasNumber = numberEl.checked;
 	    const hasSymbol = symbolEl.checked;
 	    generatedPassword = true;
-	    resultEl.innerText = generatePassword(length, hasLower, hasUpper, hasNumber, hasSymbol);
+		resultEl.innerText = generatePassword(length, hasLower,hasUpper,hasNumber,hasSymbol);
 	    copyInfo.style.transform = 'translateY(0%)';
 	    copyInfo.style.opacity = "0.75";
 	    copiedInfo.style.transform = "translatey(200%)";
@@ -162,8 +155,9 @@ generateBtn.addEventListener("click", () => {
     }
 });
 
+	// GENEATE RANDOM EMAIL
 function generateEmail(){
-    generatedEmail = ''
+    generatedEmail = '';
     var name1 = db.firstName;
     var name2 = db.lastName;
     var domains = db.domains;
@@ -179,46 +173,92 @@ function generateEmail(){
   	return generatedEmail;
 }
 
-    // GENEATE PASSWORD
-function generatePassword(length, lower, upper, number, symbol) {
-	let generatedPassword = '';
-	const typesCount = lower + upper + number + symbol;
-	const typesArr = [{lower}, {upper}, {number}, {symbol}].filter(item => Object.values(item)[0]);
-	if (typesCount === 0) {
-		return '';
-	}
+	// GENERATE RANDOM PASSPHRASE
+function generatePassphrase(length) {
+	let x = '';
+	let generatedPassphrase = '';
+
 	for (let i = 0; i < length; i++) {
-		typesArr.forEach(type => {
-			const funcName = Object.keys(type)[0];
-			generatedPassword += randomFunc[funcName]();
-		});
+		if (i == (length-1)) {
+			const random = Math.floor(Math.random() * 620000);
+			x = capitalizeFirstLetter(db.words[random]) + getRandomNumber();
+			generatedPassphrase = generatedPassphrase + x;
+		} else {
+			const random = Math.floor(Math.random() * 620000);
+			x = capitalizeFirstLetter(db.words[random]) + getRandomNumber() + '-';
+			generatedPassphrase = generatedPassphrase + x;
+		}
 	}
-	return generatedPassword.slice(0, length);
+
+	console.log(generatedPassphrase);
+
+	return generatedPassphrase;
 }
+
+    // GENEATE RANDOM PASSWORD
+function generatePassword(length, lower, upper, number, symbol) {
+	let tmp = '';
+	let x = '';
+	let passwd = '';
+
+    if (lower == true) {
+        tmp = tmp + 'abcdefghijklmnopqrstuvwxyz';
+	}
+    if (upper == true) {
+        tmp = tmp + 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    }
+	if (number == true) {
+        tmp = tmp + '0123456789';
+    }
+    if (symbol == true) {
+        tmp = tmp + '~!@#$%^&*()_+{}":?><;.,';
+    }
+
+	for (let i = 0; i < length; i++) {
+        const random = Math.floor(Math.random() * 85);
+        x = tmp.charAt(random);
+        passwd = passwd + x;
+    }
+
+	console.log(passwd);
+	return passwd;
+};
 
 // CHECK BUTTONS
 function disableOnlyCheckbox() {
-	let totalChecked = [uppercaseEl, lowercaseEl, numberEl, symbolEl].filter(el => el.checked)
+	let totalChecked = [uppercaseEl, lowercaseEl, numberEl, symbolEl].filter(el => el.checked);
 	
 	totalChecked.forEach(el => {
         if (totalChecked.length == 1)  {
             el.disabled = true;
-		}else {
+		} else {
 			el.disabled = false;
 		}
-	})
-
+	});
 }
 
-// HIDE PASSWD SETTINGS
+// HIDE SETTINGS
 var toHide = document.getElementById('toHide');
-[emailEl, uppercaseEl, lowercaseEl, numberEl, symbolEl].forEach(el => {
+var toHide2 = document.getElementById('toHide2');
+
+toHide.style.display = 'none'; // hide by default
+toHide2.style.display = 'none'; // hide by default
+
+
+[emailEl, passphraseEl, passwordEl, uppercaseEl, lowercaseEl, numberEl, symbolEl].forEach(el => {
 	el.addEventListener('click', () => {
         if (emailEl.checked) {
             toHide.style.display = 'none';
-        } else {
+        } else if (passphraseEl.checked) {
 			toHide.style.display = 'block';
+			toHide2.style.display = 'none';
+		} else if (passwordEl.checked) {
+			toHide.style.display = 'block';
+			toHide2.style.display = 'block';
+		} else {
+			toHide.style.display = 'none'; // hide by default
+			toHide2.style.display = 'none'; // hide by default
 		}
-		disableOnlyCheckbox()
-	})
-})
+		disableOnlyCheckbox();
+	});
+});
