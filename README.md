@@ -55,5 +55,8 @@ Clearly, the normal password mode should be to be complete. Although, personally
 It is always highly recommended to use a secure password manager. Some of my recommendations are: 
 - Bitwarden.
 - KeePass.
+
+<br/>
+
 They are very different from each other, I recommend you to investigate and choose according to what fits you best.
 Remember that I have a [homeLab](https://github.com/impulsado/homeLab) project where I explain how to host your own Bitwarden server at home.
