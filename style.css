@@ -34,7 +34,7 @@ button {
 body::-webkit-scrollbar { 
     display: none;  /* Safari and Chrome */
 	-ms-overflow-style: none; /* IE 11 */
-	/* I idk Firefox */
+	/* idk Firefox */
 }
 
 #container h2.title {
