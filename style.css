@@ -10,7 +10,7 @@ body {
     display: flex;
 	align-items: center;
 	justify-content: center;
-    overflow: hidden;
+    overflow: scroll;
     padding: 10px;
     min-height: 100vh;
     flex-direction: column;
@@ -29,6 +29,12 @@ button {
 	background: #2e2e2e;
 	border-radius: 10px;
 	font-family: 'Muli', sans-serif;
+}
+
+body::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+	-ms-overflow-style: none; /* IE 11 */
+	/* I idk Firefox */
 }
 
 #container h2.title {
