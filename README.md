@@ -10,7 +10,9 @@ As I couldn't find any website that could do the email mode, plus the other mode
 
 <br/>
 
-## [Website](https://impulsado2.github.io)
+## [Website](https://impulsado2.github.io) 🔐🌐
+
+<br/>
 
 ## Explanation of modes
 ### Email Mode
