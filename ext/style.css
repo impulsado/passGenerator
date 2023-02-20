@@ -1,0 +1,33 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+	background-color: #0f0f0f;
+}
+
+a {
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+.squares {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    height: 100vh;
+    gap: 10px;
+}
+
+.squares > div {
+  flex: 1 0 calc(33.33% - 10px);
+  max-width: 150px;
+  aspect-ratio: 1 / 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
